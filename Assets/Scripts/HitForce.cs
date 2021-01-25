@@ -7,6 +7,7 @@ public class HitForce : MonoBehaviour
 {
     private PlayerController hitPlayer;
     private PlayerController player;
+    private PlayerController otherPlayer;
     private float collisionForce;
     public UnityEvent OnHit;
 
@@ -20,14 +21,17 @@ public class HitForce : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         hitPlayer = collision.collider.GetComponentInParent<PlayerController>(); //xr rig
+        otherPlayer = collision.collider.GetComponent<PlayerController>();
 
-        Debug.Log("hit player? " + hitPlayer);
-        Debug.Log("MAgnitude " + collision.relativeVelocity.magnitude);
+        Debug.Log("hit player " + hitPlayer);
+        Debug.Log("bot? " + otherPlayer);
+        
         if (hitPlayer && hitPlayer != player)
         {
             if (collision.relativeVelocity.magnitude > 0.0001)
             {
-                collisionForce = collision.relativeVelocity.magnitude;
+                MasterController.instance.VibrateController();
+                collisionForce = collision.relativeVelocity.magnitude/10;
                 OnHit?.Invoke();
             }
         }

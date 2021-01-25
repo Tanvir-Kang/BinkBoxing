@@ -25,7 +25,10 @@ public class MasterController : MonoBehaviour
     private XRController leftController;
 
     [SerializeField]
-    private float movementSpeed = 1f;
+    private float movementSpeed = 0.5f;
+
+    float amplitude = 0.5f;
+    float duration = 0.25f;
 
     void Awake()
     {
@@ -98,6 +101,12 @@ public class MasterController : MonoBehaviour
 
         Vector3 input = Quaternion.Euler(transform.localEulerAngles.x, Camera.main.transform.localEulerAngles.y, transform.localEulerAngles.z) * new Vector3(hAxis, 0.0f, vAxis);
         transform.position += input * yAxis;
+    }
+
+    public void VibrateController()
+    {
+        rightController.SendHapticImpulse(amplitude, duration);
+        leftController.SendHapticImpulse(amplitude, duration);
     }
 
     void Update()
